@@ -4,12 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login · Meow Dating</title>
-  <meta name="description" content="Log in to your account. (Demo only)">
+  <meta name="description" content="Sign in or create your account. (Demo only)">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
+  <style>
+    /* minimal styles for the segmented tabs */
+    .tabs{display:flex;gap:8px;justify-content:center;margin:0 0 16px}
+    .tab{padding:10px 14px;border:1px solid var(--border);border-radius:999px;background:var(--card);cursor:pointer}
+    .tab[aria-selected="true"]{background:var(--accent);color:#fff;border-color:transparent}
+    .auth-wrap{max-width:560px;margin:auto}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <div class="container nav-wrap">
       <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
@@ -20,7 +28,8 @@
           <li><a href="users.html">Users</a></li>
           <li><a href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
-          <li><a href="register.html">Register</a></li>
+          <!-- Register 链接指向 login#signup -->
+          <li><a href="login.html#signup">Register</a></li>
           <li><a class="active" href="login.html" aria-current="page">Login</a></li>
           <li><a href="feedback.html">Feedback</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -32,13 +41,38 @@
 
   <main id="main" class="section">
     <div class="container">
-      <div class="card form-vert" style="max-width:560px;margin:auto">
-        <h2>Login</h2>
-        <form id="login-form" novalidate>
-          <label>Email <input name="email" type="email" required></label>
-          <label>Password <input name="password" type="password" required></label>
-          <button class="btn primary" type="submit">Login</button>
-        </form>
+      <div class="card form-vert auth-wrap">
+        <h2 id="auth-title">Welcome back</h2>
+
+        <!-- segmented tabs -->
+        <div role="tablist" aria-label="Authentication" class="tabs" id="auth-tabs">
+          <button role="tab" id="tab-login" class="tab" aria-selected="true" aria-controls="panel-login">Log in</button>
+          <button role="tab" id="tab-signup" class="tab" aria-selected="false" aria-controls="panel-signup">Create account</button>
+        </div>
+
+        <!-- Login panel -->
+        <section role="tabpanel" id="panel-login" aria-labelledby="tab-login">
+          <form id="login-form" class="form-vert" novalidate>
+            <label>Email <input name="email" type="email" required></label>
+            <label>Password <input name="password" type="password" required></label>
+            <button class="btn primary" type="submit">Login</button>
+          </form>
+          <p class="form-tip">
+            Forgot your password? <a href="#" id="fake-reset">Reset (demo)</a>
+          </p>
+          <p class="form-tip">No account? <a href="login.html#signup" id="go-signup">Create one</a></p>
+        </section>
+
+        <!-- Signup panel -->
+        <section role="tabpanel" id="panel-signup" aria-labelledby="tab-signup" hidden>
+          <form id="register-form" class="form-vert" novalidate>
+            <label>Username <input name="username" required></label>
+            <label>Email <input name="email" type="email" required></label>
+            <label>Password <input name="password" type="password" minlength="6" required></label>
+            <button class="btn primary" type="submit">Create account</button>
+          </form>
+          <p class="form-tip">Already have an account? <a href="login.html#login" id="go-login">Back to login</a></p>
+        </section>
       </div>
     </div>
   </main>
