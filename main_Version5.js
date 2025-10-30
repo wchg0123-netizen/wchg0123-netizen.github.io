@@ -1,7 +1,7 @@
-// 暗黑模式
+// 主题切换
 const root = document.documentElement;
 const themeBtn = document.getElementById('theme-toggle');
-if (themeBtn) {
+if (themeBtn){
   const saved = localStorage.getItem('theme');
   if (saved === 'dark') root.classList.add('dark');
   themeBtn.setAttribute('aria-pressed', root.classList.contains('dark'));
@@ -21,7 +21,7 @@ navToggle?.addEventListener('click', () => {
   navToggle.setAttribute('aria-expanded', String(open));
 });
 
-// 示例用户数据（生产环境请替换为真实接口数据）
+// 示例用户数据
 const USERS = [
   { name:'Luna', age:22, gender:'Female', hobby:'music' },
   { name:'Milo', age:25, gender:'Male', hobby:'basketball' },
@@ -31,13 +31,14 @@ const USERS = [
   { name:'Mimi', age:26, gender:'Female', hobby:'travel' },
 ];
 
+// 渲染用户卡片
 const userList = document.getElementById('user-list');
 function renderUsers(list = USERS) {
   userList.innerHTML = list.map(u => `
     <article class="card user-card" tabindex="0">
       <h3>${u.name}</h3>
       <p class="user-meta">Age ${u.age} · ${u.gender} · Hobby: ${u.hobby}</p>
-      <button class="btn ghost" aria-label="Like ${u.name}">♡ Like</button>
+      <button class="btn ghost like" aria-label="Like ${u.name}">♡ 喜欢</button>
     </article>
   `).join('');
 }
@@ -60,18 +61,18 @@ document.getElementById('user-filter')?.addEventListener('submit', e => {
   renderUsers(res);
 });
 
-// Match 演示
+// 匹配
 document.getElementById('match-btn')?.addEventListener('click', () => {
   const target = USERS[Math.floor(Math.random()*USERS.length)];
   const el = document.getElementById('match-result');
-  el.textContent = `You matched with ${target.name} 🎉`;
+  el.textContent = `与你匹配的是：${target.name} 🎉`;
 });
 
-// Chat 演示
+// 聊天
 const chatLog = document.getElementById('chat-log');
 function addMsg(text, who='you'){
   const li = document.createElement('li');
-  li.textContent = (who === 'bot' ? 'Meow: ' : 'You: ') + text;
+  li.textContent = (who === 'bot' ? 'Meow: ' : '你: ') + text;
   chatLog.appendChild(li);
   chatLog.scrollTop = chatLog.scrollHeight;
 }
@@ -82,10 +83,10 @@ document.getElementById('chat-form')?.addEventListener('submit', e => {
   if(!text) return;
   addMsg(text, 'you');
   input.value = '';
-  setTimeout(()=> addMsg('Meow~ Nice to meet you!', 'bot'), 400);
+  setTimeout(()=> addMsg('Meow~ 很高兴认识你！', 'bot'), 400);
 });
 
-// 表单校验（Register/Login/Feedback/Contact）
+// 简易表单提交
 function bindSimpleForm(id){
   const form = document.getElementById(id);
   form?.addEventListener('submit', e => {
@@ -94,7 +95,7 @@ function bindSimpleForm(id){
       form.reportValidity();
       return;
     }
-    alert('Submitted! (demo only)');
+    alert('已提交！（演示）');
     form.reset();
   });
 }
