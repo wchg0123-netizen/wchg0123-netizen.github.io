@@ -1,87 +1,191 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Meow Dating Platform</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meow Dating Platform · Demo</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Meow Dating Platform demo: user catalogue, match, chat, register & feedback." />
+  <link rel="canonical" href="https://wchg0123-netizen.github.io/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Meow Dating Platform · Demo" />
+  <meta property="og:description" content="A clean, responsive demo for user matching & chat." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://wchg0123-netizen.github.io/" />
+  <meta property="og:image" content="https://wchg0123-netizen.github.io/og-image.png" />
+
+  <!-- 性能优化：可按需保留 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 系统字体优先，保证稳定渲染；需要外链字体时再启用 -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"> -->
+
+  <!-- 样式 -->
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    nav a { margin-right: 10px; }
-    section.page { display: none; }
-    section.page.active { display: block; }
+    /* 安全回退：即使 style.css 加载失败也能基本可用 */
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,'Apple Color Emoji','Segoe UI Emoji';margin:0;color:#111;background:#fff}
   </style>
 </head>
 <body>
-  <h1>Meow Dating Platform</h1>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#users">User Catalogue</a>
-    <a href="#match">Match</a>
-    <a href="#chat">Chat</a>
-    <a href="#register">Register</a>
-    <a href="#login">Login</a>
-    <a href="#feedback">Feedback</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <section id="home" class="page active">
-    <h2>Welcome!</h2>
-    <p>This is the Meow Dating Platform demo.</p>
-  </section>
-  <section id="users" class="page">
-    <h2>User Catalogue</h2>
-    <form id="searchForm">
-      Age: <input type="number" min="18" max="99" /> 
-      Gender: <select><option value="">Any</option><option>Male</option><option>Female</option></select>
-      Hobby: <input type="text" placeholder="Enter hobby" />
-      <button type="submit">Search</button>
-    </form>
-    <ul id="userList"></ul>
-  </section>
-  <section id="match" class="page">
-    <h2>Match System</h2>
-    <button id="matchBtn">Find a match</button>
-    <div id="matchResult"></div>
-  </section>
-  <section id="chat" class="page">
-    <h2>Chat Demo</h2>
-    <div id="messages"></div>
-    <form id="chatForm">
-      <input type="text" id="chatInput" placeholder="Type a message" />
-      <button type="submit">Send</button>
-    </form>
-  </section>
-  <section id="register" class="page">
-    <h2>Register</h2>
-    <form id="registerForm">
-      <input type="text" placeholder="Username" required />
-      <input type="password" placeholder="Password" required />
-      <button type="submit">Register</button>
-    </form>
-    <div id="registerResult"></div>
-  </section>
-  <section id="login" class="page">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="text" placeholder="Username" required />
-      <input type="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
-    <div id="loginResult"></div>
-  </section>
-  <section id="feedback" class="page">
-    <h2>Feedback</h2>
-    <form id="feedbackForm">
-      <input type="text" placeholder="Your feedback" required />
-      <button type="submit">Submit</button>
-    </form>
-    <ul id="feedbackList"></ul>
-  </section>
-  <section id="contact" class="page">
-    <h2>Contact Us</h2>
-    <form id="contactForm">
-      <input type="text" placeholder="Your question" required />
-      <button type="submit">Submit</button>
-    </form>
-  </section>
-  <script src="main.js"></script>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <div class="brand">Meow Dating</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#users">User Catalogue</a></li>
+          <li><a href="#match">Match</a></li>
+          <li><a href="#chat">Chat</a></li>
+          <li><a href="#register">Register</a></li>
+          <li><a href="#login">Login</a></li>
+          <li><a href="#feedback">Feedback</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section id="home" class="section hero">
+      <div class="container hero-inner">
+        <h1>Welcome! <span class="accent">Meow Dating Platform</span></h1>
+        <p class="lead">A clean, responsive demo for browsing users, finding matches, and chatting safely.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#users">Browse Users</a>
+          <a class="btn" href="#match">Try Match</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Users -->
+    <section id="users" class="section">
+      <div class="container">
+        <h2>User Catalogue</h2>
+        <form id="user-filter" class="card form-grid" aria-describedby="userFilterDesc">
+          <p id="userFilterDesc" class="sr">Filter users by age, gender and hobby (demo).</p>
+          <label>Age
+            <input type="number" name="age" min="18" max="80" placeholder="Any" />
+          </label>
+          <label>Gender
+            <select name="gender">
+              <option value="">Any</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </label>
+          <label>Hobby
+            <input type="text" name="hobby" placeholder="e.g. music" />
+          </label>
+          <button type="submit" class="btn primary">Search</button>
+          <button type="reset" class="btn ghost">Reset</button>
+        </form>
+
+        <div id="user-list" class="grid cards">
+          <!-- 由 JS 注入示例用户卡片 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Match -->
+    <section id="match" class="section alt">
+      <div class="container">
+        <h2>Match System</h2>
+        <p>Click to simulate a match suggestion (demo).</p>
+        <button id="match-btn" class="btn primary">Find a match</button>
+        <div id="match-result" class="match-result" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Chat -->
+    <section id="chat" class="section">
+      <div class="container">
+        <h2>Chat Demo</h2>
+        <div class="card chat">
+          <ul id="chat-log" class="chat-log" aria-live="polite" aria-label="Chat messages"></ul>
+          <form id="chat-form" class="chat-form">
+            <label class="sr" for="chat-input">Your message</label>
+            <input id="chat-input" name="message" type="text" autocomplete="off" placeholder="Type a message…" required />
+            <button type="submit" class="btn primary">Send</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Register -->
+    <section id="register" class="section alt">
+      <div class="container">
+        <h2>Register</h2>
+        <form id="register-form" class="card form-vert" novalidate>
+          <label>Username <input name="username" required /></label>
+          <label>Email <input name="email" type="email" required /></label>
+          <label>Password <input name="password" type="password" minlength="6" required /></label>
+          <button class="btn primary" type="submit">Register</button>
+        </form>
+        <p class="form-tip">* Demo only. No data is sent.</p>
+      </div>
+    </section>
+
+    <!-- Login -->
+    <section id="login" class="section">
+      <div class="container">
+        <h2>Login</h2>
+        <form id="login-form" class="card form-vert" novalidate>
+          <label>Email <input name="email" type="email" required /></label>
+          <label>Password <input name="password" type="password" required /></label>
+          <button class="btn primary" type="submit">Login</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Feedback -->
+    <section id="feedback" class="section alt">
+      <div class="container">
+        <h2>Feedback</h2>
+        <form id="feedback-form" class="card form-vert" novalidate>
+          <label>Your name <input name="name" required /></label>
+          <label>Message <textarea name="message" rows="4" required></textarea></label>
+          <button class="btn primary" type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <form id="contact-form" class="card form-vert" novalidate>
+          <label>Email <input name="email" type="email" required /></label>
+          <label>Topic
+            <select name="topic" required>
+              <option value="">Select a topic</option>
+              <option>Support</option>
+              <option>Press</option>
+              <option>Partnership</option>
+            </select>
+          </label>
+          <label>Details <textarea name="details" rows="4" required></textarea></label>
+          <button class="btn primary" type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <p>© <span id="year"></span> Meow Dating Demo</p>
+      <a href="#top" class="btn to-top" aria-label="Back to top">↑</a>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
 </body>
 </html>
