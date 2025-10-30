@@ -169,3 +169,34 @@ function bindSimpleForm(id){
 
 // Year
 document.getElementById('year').textContent = new Date().getFullYear();
+// ---- Auth tabs (login + signup in one page) ----
+(function(){
+  const tabLogin = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+  const panelLogin = document.getElementById('panel-login');
+  const panelSignup = document.getElementById('panel-signup');
+  const title = document.getElementById('auth-title');
+
+  if (!tabLogin || !tabSignup || !panelLogin || !panelSignup) return;
+
+  function show(which){
+    const isLogin = which === 'login';
+    tabLogin.setAttribute('aria-selected', String(isLogin));
+    tabSignup.setAttribute('aria-selected', String(!isLogin));
+    panelLogin.hidden = !isLogin;
+    panelSignup.hidden = isLogin;
+    title && (title.textContent = isLogin ? 'Welcome back' : 'Create your account');
+  }
+
+  tabLogin.addEventListener('click', () => { history.replaceState(null,'','login.html#login'); show('login'); });
+  tabSignup.addEventListener('click', () => { history.replaceState(null,'','login.html#signup'); show('signup'); });
+
+  // Deep-link support: login.html#signup  / #login
+  const hash = (location.hash || '').toLowerCase();
+  show(hash.includes('signup') ? 'signup' : 'login');
+
+  // Demo reset password
+  document.getElementById('fake-reset')?.addEventListener('click', (e)=>{
+    e.preventDefault(); alert('Demo only: password reset is not implemented.');
+  });
+})();
