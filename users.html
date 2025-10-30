@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Users · Meow Dating</title>
+  <meta name="description" content="User catalogue with simple filtering by age, gender, and hobby.">
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="style_Version2.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="users.html" aria-current="page">Users</a></li>
+          <li><a href="match.html">Match</a></li>
+          <li><a href="chat.html">Chat</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="feedback.html">Feedback</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>User Catalogue</h2>
+        <p class="muted">Demo data with simple filtering.</p>
+      </div>
+
+      <form id="user-filter" class="card form-grid" aria-describedby="userFilterDesc">
+        <p id="userFilterDesc" class="sr">Filter users by age, gender and hobby.</p>
+        <label>Age
+          <input type="number" name="age" min="18" max="80" placeholder="Any" />
+        </label>
+        <label>Gender
+          <select name="gender">
+            <option value="">Any</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </label>
+        <label>Hobby
+          <input type="text" name="hobby" placeholder="e.g. music" />
+        </label>
+        <button type="submit" class="btn primary">Search</button>
+        <button type="reset" class="btn ghost">Reset</button>
+      </form>
+
+      <div id="user-list" class="grid cards" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <p>© <span id="year"></span> Meow Dating</p>
+    </div>
+  </footer>
+  <script src="main_Version5.js" defer></script>
+</body>
+</html>
