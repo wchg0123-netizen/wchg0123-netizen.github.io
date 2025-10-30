@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat · Meow Dating</title>
+  <meta name="description" content="A simple chat demo with echo responses.">
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="style_Version2.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="match.html">Match</a></li>
+          <li><a class="active" href="chat.html" aria-current="page">Chat</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="feedback.html">Feedback</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="section">
+    <div class="container">
+      <h2>Chat Demo</h2>
+      <div class="card chat">
+        <ul id="chat-log" class="chat-log" aria-live="polite" aria-label="Chat messages"></ul>
+        <form id="chat-form" class="chat-form">
+          <label class="sr" for="chat-input">Your message</label>
+          <input id="chat-input" name="message" type="text" autocomplete="off" placeholder="Type a message…" required />
+          <button type="submit" class="btn primary">Send</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <p>© <span id="year"></span> Meow Dating</p>
+    </div>
+  </footer>
+  <script src="main_Version5.js" defer></script>
+</body>
+</html>
