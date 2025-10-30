@@ -7,22 +7,18 @@
   <meta name="description" content="Welcome to Meow Dating — browse users, find matches, chat, and share feedback. Card-style design, responsive layout, and dark mode ready.">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0}
-  </style>
+  <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0}</style>
 </head>
-
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Header -->
   <header class="site-header">
     <div class="container nav-wrap">
       <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
       <nav class="nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
-          <li><a class="active" href="index.html" aria-current="page">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="users.html">Users</a></li>
           <li><a href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
@@ -35,15 +31,11 @@
     </div>
   </header>
 
-  <!-- Main Hero Section -->
   <main id="main" class="section hero">
     <div class="container hero-grid card">
       <div>
         <h1>Welcome to <span class="accent">Meow Dating</span></h1>
-        <p class="lead">
-          Discover people who share your interests.  
-          Enjoy a sleek, card-based design with responsive layout and smooth interactions.
-        </p>
+        <p class="lead">Discover people who share your interests — with a clean card layout, responsive design, and dark mode.</p>
         <div class="hero-actions">
           <a class="btn primary" href="users.html">Browse Users</a>
           <a class="btn ghost" href="match.html">Try Match</a>
@@ -52,48 +44,46 @@
       <ul class="hero-points">
         <li>Fully responsive card layout</li>
         <li>Dark / light mode toggle</li>
-        <li>Modern, accessible, minimal design</li>
+        <li>Accessible & minimal UI</li>
       </ul>
     </div>
   </main>
 
-  <!-- Feature Highlights -->
   <section class="section alt">
     <div class="container grid cards">
       <div class="card">
         <h3>👥 User Catalogue</h3>
-        <p>Explore our user cards with simple filtering by age, gender, and hobbies.</p>
+        <p>Explore user cards with simple filtering by age, gender, and hobby.</p>
         <a class="btn primary" href="users.html">Go to Users</a>
       </div>
       <div class="card">
-        <h3>💘 Match System</h3>
-        <p>Click to find your match! A playful random match demo with cheerful feedback.</p>
+        <h3>💘 Match</h3>
+        <p>Click to get a playful match suggestion.</p>
         <a class="btn primary" href="match.html">Find a Match</a>
       </div>
       <div class="card">
-        <h3>💬 Chat Room</h3>
-        <p>Try our mini chat demo. Send a message and get an instant meow response!</p>
+        <h3>💬 Chat</h3>
+        <p>Send a message and get an instant meow response.</p>
         <a class="btn primary" href="chat.html">Open Chat</a>
       </div>
       <div class="card">
+        <h3>🔐 Login</h3>
+        <p>Sign in or create an account from the same page.</p>
+        <a class="btn primary" href="login.html">Go to Login</a>
+      </div>
+      <div class="card">
         <h3>📝 Feedback</h3>
-        <p>We love hearing from you. Leave feedback or comments anytime.</p>
+        <p>We love hearing from you. Share your thoughts.</p>
         <a class="btn primary" href="feedback.html">Give Feedback</a>
       </div>
       <div class="card">
-        <h3>📩 Contact Us</h3>
-        <p>Get in touch for support, media inquiries, or partnership opportunities.</p>
-        <a class="btn primary" href="contact.html">Contact</a>
-      </div>
-      <div class="card">
-        <h3>🔐 Login</h3>
-        <p>Sign in or create a demo account from the login page.</p>
-        <a class="btn primary" href="login.html">Login</a>
+        <h3>📩 Contact</h3>
+        <p>Support, press, or partnerships — get in touch.</p>
+        <a class="btn primary" href="contact.html">Contact Us</a>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container foot-grid">
       <p>© <span id="year"></span> Meow Dating</p>
@@ -104,4 +94,3 @@
   <script src="main_Version5.js" defer></script>
 </body>
 </html>
-
