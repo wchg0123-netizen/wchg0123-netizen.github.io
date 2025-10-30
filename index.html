@@ -1,54 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Meow Dating Platform · Demo</title>
-
-  <!-- SEO -->
-  <meta name="description" content="Meow Dating Platform demo: user catalogue, match, chat, register & feedback." />
-  <link rel="canonical" href="https://wchg0123-netizen.github.io/" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Meow Dating Platform · Demo" />
-  <meta property="og:description" content="A clean, responsive demo for user matching & chat." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://wchg0123-netizen.github.io/" />
-  <meta property="og:image" content="https://wchg0123-netizen.github.io/og-image.png" />
-
-  <!-- 性能优化：可按需保留 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 系统字体优先，保证稳定渲染；需要外链字体时再启用 -->
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"> -->
-
-  <!-- 样式 -->
+  <title>Meow Dating · 卡片式演示</title>
+  <meta name="description" content="卡牌式排版示例：用户目录、匹配、聊天、注册、反馈与联系。">
+  <link rel="canonical" href="https://wchg0123-netizen.github.io/">
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* 安全回退：即使 style.css 加载失败也能基本可用 */
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,'Apple Color Emoji','Segoe UI Emoji';margin:0;color:#111;background:#fff}
-  </style>
+  <link rel="stylesheet" href="style_Version2.css" />
+  <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0}</style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">跳到正文</a>
 
+  <!-- 头部导航 -->
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <div class="brand">Meow Dating</div>
-      <nav class="nav" aria-label="Primary">
+      <nav class="nav" aria-label="主导航">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#users">User Catalogue</a></li>
-          <li><a href="#match">Match</a></li>
-          <li><a href="#chat">Chat</a></li>
-          <li><a href="#register">Register</a></li>
-          <li><a href="#login">Login</a></li>
-          <li><a href="#feedback">Feedback</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#home">首页</a></li>
+          <li><a href="#users">用户目录</a></li>
+          <li><a href="#match">匹配</a></li>
+          <li><a href="#chat">聊天</a></li>
+          <li><a href="#register">注册</a></li>
+          <li><a href="#login">登录</a></li>
+          <li><a href="#feedback">反馈</a></li>
+          <li><a href="#contact">联系</a></li>
         </ul>
-        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="切换深色模式">🌙</button>
       </nav>
     </div>
   </header>
@@ -56,125 +37,138 @@
   <main id="main">
     <!-- Hero -->
     <section id="home" class="section hero">
-      <div class="container hero-inner">
-        <h1>Welcome! <span class="accent">Meow Dating Platform</span></h1>
-        <p class="lead">A clean, responsive demo for browsing users, finding matches, and chatting safely.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#users">Browse Users</a>
-          <a class="btn" href="#match">Try Match</a>
+      <div class="container hero-grid card">
+        <div>
+          <h1>卡牌式排版 · <span class="accent">Meow Dating</span></h1>
+          <p class="lead">采用栅格系统与卡片组件：清晰的层次、统一圆角与阴影、移动端自适应。</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#users">开始浏览</a>
+            <a class="btn ghost" href="#match">试试匹配</a>
+          </div>
         </div>
+        <ul class="hero-points">
+          <li>语义化结构（header / main / section / footer）</li>
+          <li>响应式网格与卡片布局</li>
+          <li>暗黑模式 · 平滑滚动</li>
+        </ul>
       </div>
     </section>
 
-    <!-- Users -->
+    <!-- 用户目录（卡片墙） -->
     <section id="users" class="section">
       <div class="container">
-        <h2>User Catalogue</h2>
+        <div class="section-head">
+          <h2>用户目录</h2>
+          <p class="muted">演示数据，支持简单筛选。</p>
+        </div>
+
         <form id="user-filter" class="card form-grid" aria-describedby="userFilterDesc">
-          <p id="userFilterDesc" class="sr">Filter users by age, gender and hobby (demo).</p>
-          <label>Age
-            <input type="number" name="age" min="18" max="80" placeholder="Any" />
+          <p id="userFilterDesc" class="sr">按年龄、性别与爱好筛选用户。</p>
+          <label>年龄
+            <input type="number" name="age" min="18" max="80" placeholder="不限">
           </label>
-          <label>Gender
+          <label>性别
             <select name="gender">
-              <option value="">Any</option>
+              <option value="">不限</option>
               <option>Male</option>
               <option>Female</option>
             </select>
           </label>
-          <label>Hobby
-            <input type="text" name="hobby" placeholder="e.g. music" />
+          <label>爱好
+            <input type="text" name="hobby" placeholder="如 music">
           </label>
-          <button type="submit" class="btn primary">Search</button>
-          <button type="reset" class="btn ghost">Reset</button>
+          <button type="submit" class="btn primary">筛选</button>
+          <button type="reset" class="btn ghost">重置</button>
         </form>
 
-        <div id="user-list" class="grid cards">
-          <!-- 由 JS 注入示例用户卡片 -->
+        <!-- 卡片式用户网格 -->
+        <div id="user-list" class="grid cards"></div>
+      </div>
+    </section>
+
+    <!-- 匹配 -->
+    <section id="match" class="section alt">
+      <div class="container">
+        <div class="stack">
+          <div class="section-head">
+            <h2>匹配系统</h2>
+            <p class="muted">点击按钮随机生成一个匹配结果（示例）。</p>
+          </div>
+          <div class="card row">
+            <button id="match-btn" class="btn primary">开始匹配</button>
+            <div id="match-result" class="match-result" role="status" aria-live="polite"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Match -->
-    <section id="match" class="section alt">
-      <div class="container">
-        <h2>Match System</h2>
-        <p>Click to simulate a match suggestion (demo).</p>
-        <button id="match-btn" class="btn primary">Find a match</button>
-        <div id="match-result" class="match-result" role="status" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <!-- Chat -->
+    <!-- 聊天 -->
     <section id="chat" class="section">
       <div class="container">
-        <h2>Chat Demo</h2>
+        <h2>聊天演示</h2>
         <div class="card chat">
-          <ul id="chat-log" class="chat-log" aria-live="polite" aria-label="Chat messages"></ul>
+          <ul id="chat-log" class="chat-log" aria-live="polite" aria-label="聊天消息"></ul>
           <form id="chat-form" class="chat-form">
-            <label class="sr" for="chat-input">Your message</label>
-            <input id="chat-input" name="message" type="text" autocomplete="off" placeholder="Type a message…" required />
-            <button type="submit" class="btn primary">Send</button>
+            <label class="sr" for="chat-input">你的消息</label>
+            <input id="chat-input" name="message" type="text" autocomplete="off" placeholder="输入消息…" required />
+            <button type="submit" class="btn primary">发送</button>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- Register -->
+    <!-- 注册 / 登录 / 反馈 / 联系（卡片栈） -->
     <section id="register" class="section alt">
-      <div class="container">
-        <h2>Register</h2>
-        <form id="register-form" class="card form-vert" novalidate>
-          <label>Username <input name="username" required /></label>
-          <label>Email <input name="email" type="email" required /></label>
-          <label>Password <input name="password" type="password" minlength="6" required /></label>
-          <button class="btn primary" type="submit">Register</button>
-        </form>
-        <p class="form-tip">* Demo only. No data is sent.</p>
+      <div class="container two-col">
+        <div class="card form-vert">
+          <h3>注册</h3>
+          <form id="register-form" novalidate>
+            <label>用户名 <input name="username" required></label>
+            <label>邮箱 <input name="email" type="email" required></label>
+            <label>密码 <input name="password" type="password" minlength="6" required></label>
+            <button class="btn primary" type="submit">注册</button>
+          </form>
+          <p class="form-tip">演示页面，不会发送任何数据。</p>
+        </div>
+
+        <div class="card form-vert" id="login">
+          <h3>登录</h3>
+          <form id="login-form" novalidate>
+            <label>邮箱 <input name="email" type="email" required></label>
+            <label>密码 <input name="password" type="password" required></label>
+            <button class="btn primary" type="submit">登录</button>
+          </form>
+        </div>
       </div>
     </section>
 
-    <!-- Login -->
-    <section id="login" class="section">
-      <div class="container">
-        <h2>Login</h2>
-        <form id="login-form" class="card form-vert" novalidate>
-          <label>Email <input name="email" type="email" required /></label>
-          <label>Password <input name="password" type="password" required /></label>
-          <button class="btn primary" type="submit">Login</button>
-        </form>
-      </div>
-    </section>
+    <section id="feedback" class="section">
+      <div class="container two-col">
+        <div class="card form-vert">
+          <h3>反馈</h3>
+          <form id="feedback-form" novalidate>
+            <label>称呼 <input name="name" required></label>
+            <label>内容 <textarea name="message" rows="4" required></textarea></label>
+            <button class="btn primary" type="submit">提交</button>
+          </form>
+        </div>
 
-    <!-- Feedback -->
-    <section id="feedback" class="section alt">
-      <div class="container">
-        <h2>Feedback</h2>
-        <form id="feedback-form" class="card form-vert" novalidate>
-          <label>Your name <input name="name" required /></label>
-          <label>Message <textarea name="message" rows="4" required></textarea></label>
-          <button class="btn primary" type="submit">Submit</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section">
-      <div class="container">
-        <h2>Contact Us</h2>
-        <form id="contact-form" class="card form-vert" novalidate>
-          <label>Email <input name="email" type="email" required /></label>
-          <label>Topic
-            <select name="topic" required>
-              <option value="">Select a topic</option>
-              <option>Support</option>
-              <option>Press</option>
-              <option>Partnership</option>
-            </select>
-          </label>
-          <label>Details <textarea name="details" rows="4" required></textarea></label>
-          <button class="btn primary" type="submit">Submit</button>
-        </form>
+        <div class="card form-vert" id="contact">
+          <h3>联系</h3>
+          <form id="contact-form" novalidate>
+            <label>邮箱 <input name="email" type="email" required></label>
+            <label>主题
+              <select name="topic" required>
+                <option value="">请选择</option>
+                <option>Support</option>
+                <option>Press</option>
+                <option>Partnership</option>
+              </select>
+            </label>
+            <label>详情 <textarea name="details" rows="4" required></textarea></label>
+            <button class="btn primary" type="submit">提交</button>
+          </form>
+        </div>
       </div>
     </section>
   </main>
@@ -182,10 +176,10 @@
   <footer class="site-footer">
     <div class="container foot-grid">
       <p>© <span id="year"></span> Meow Dating Demo</p>
-      <a href="#top" class="btn to-top" aria-label="Back to top">↑</a>
+      <a href="#top" class="btn to-top" aria-label="返回顶部">↑</a>
     </div>
   </footer>
 
-  <script src="main.js" defer></script>
+  <script src="main_Version5.js" defer></script>
 </body>
 </html>
