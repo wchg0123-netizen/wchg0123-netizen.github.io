@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Meow Dating · Home</title>
-  <meta name="description" content="Welcome to Meow Dating — browse users, find matches, chat, and share feedback. Card-style design, responsive layout, and dark mode ready.">
+  <title>LoveLink · Home</title>
+  <meta name="description" content="LoveLink — browse users, find matches, chat, and manage privacy with a clean card-style UI.">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
-  <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0}</style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="container nav-wrap">
-      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">LoveLink</div>
       <nav class="nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
-          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="index.html">Home</a></li>
           <li><a href="users.html">Users</a></li>
           <li><a href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
           <li><a href="login.html">Login</a></li>
           <li><a href="feedback.html">Feedback</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="settings.html">Settings</a></li>
         </ul>
         <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
       </nav>
@@ -34,7 +34,7 @@
   <main id="main" class="section hero">
     <div class="container hero-grid card">
       <div>
-        <h1>Welcome to <span class="accent">Meow Dating</span></h1>
+        <h1>Welcome to <span class="accent">LoveLink</span></h1>
         <p class="lead">Discover people who share your interests — with a clean card layout, responsive design, and dark mode.</p>
         <div class="hero-actions">
           <a class="btn primary" href="users.html">Browse Users</a>
@@ -42,9 +42,9 @@
         </div>
       </div>
       <ul class="hero-points">
-        <li>Fully responsive card layout</li>
-        <li>Dark / light mode toggle</li>
-        <li>Accessible & minimal UI</li>
+        <li>Card-style, responsive UI</li>
+        <li>Dark / light theme</li>
+        <li>Accessible & minimal</li>
       </ul>
     </div>
   </main>
@@ -52,13 +52,13 @@
   <section class="section alt">
     <div class="container grid cards">
       <div class="card">
-        <h3>👥 User Catalogue</h3>
-        <p>Explore user cards with simple filtering by age, gender, and hobby.</p>
+        <h3>👥 Users</h3>
+        <p>Explore user cards. Click to chat or learn more.</p>
         <a class="btn primary" href="users.html">Go to Users</a>
       </div>
       <div class="card">
         <h3>💘 Match</h3>
-        <p>Click to get a playful match suggestion.</p>
+        <p>Filter by gender, age, and interest to find candidates.</p>
         <a class="btn primary" href="match.html">Find a Match</a>
       </div>
       <div class="card">
@@ -68,7 +68,7 @@
       </div>
       <div class="card">
         <h3>🔐 Login</h3>
-        <p>Sign in or create an account from the same page.</p>
+        <p>Sign in or create an account (demo-only).</p>
         <a class="btn primary" href="login.html">Go to Login</a>
       </div>
       <div class="card">
@@ -77,16 +77,16 @@
         <a class="btn primary" href="feedback.html">Give Feedback</a>
       </div>
       <div class="card">
-        <h3>📩 Contact</h3>
-        <p>Support, press, or partnerships — get in touch.</p>
-        <a class="btn primary" href="contact.html">Contact Us</a>
+        <h3>⚙️ Settings</h3>
+        <p>Privacy, quiet hours, and account controls.</p>
+        <a class="btn primary" href="settings.html">Open Settings</a>
       </div>
     </div>
   </section>
 
   <footer class="site-footer">
     <div class="container foot-grid">
-      <p>© <span id="year"></span> Meow Dating</p>
+      <p>© <span id="year"></span> LoveLink</p>
       <a href="#top" class="btn to-top" aria-label="Back to top">↑</a>
     </div>
   </footer>
