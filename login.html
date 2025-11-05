@@ -46,6 +46,7 @@
           <button role="tab" id="tab-signup" class="tab" aria-selected="false" aria-controls="panel-signup">Create account</button>
         </div>
 
+        <!-- Login -->
         <section role="tabpanel" id="panel-login" aria-labelledby="tab-login">
           <form id="login-form" class="form-vert" novalidate>
             <label>Email <input name="email" type="email" required></label>
@@ -53,11 +54,12 @@
             <button class="btn primary" type="submit">Login</button>
           </form>
           <p class="form-tip">
-            Forgot your password? <a href="#" id="fake-reset">Reset (demo)</a>
+            Forgot your password? <a href="forgot.html" id="fake-reset">Reset</a>
           </p>
           <p class="form-tip">No account? <a href="login.html#signup" id="go-signup">Create one</a></p>
         </section>
 
+        <!-- Signup -->
         <section role="tabpanel" id="panel-signup" aria-labelledby="tab-signup" hidden>
           <form id="register-form" class="form-vert" novalidate>
             <label>Username <input name="username" required></label>
@@ -66,7 +68,7 @@
             <button class="btn primary" type="submit">Create account</button>
           </form>
           <p class="form-tip">Already have an account? <a href="login.html#login" id="go-login">Back to login</a></p>
-          <p class="form-tip">Demo page only. No data is sent.</p>
+          <p class="form-tip">Demo only. Data is stored in your browser.</p>
         </section>
       </div>
     </div>
