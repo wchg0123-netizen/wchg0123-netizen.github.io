@@ -3,34 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Match · Meow Dating</title>
-  <meta name="description" content="Find candidates with filters and card-style results.">
+  <title>Match · LoveLink</title>
+  <meta name="description" content="Filter by gender, age, and interest to find candidates.">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
-  <style>
-    .notif-bell{position:relative}
-    .notif-badge{position:absolute;top:-6px;right:-6px;background:#e11d48;color:#fff;border-radius:999px;padding:0 6px;font-size:12px;line-height:18px;min-width:18px;text-align:center}
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
-    .modal.open{display:flex}
-    .modal .dialog{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:16px;max-width:520px;width:100%}
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="container nav-wrap">
-      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">LoveLink</div>
       <nav class="nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="users.html">Users</a></li>
-          <li><a href="match.html">Match</a></li>
+          <li><a class="active" href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
           <li><a href="login.html">Login</a></li>
           <li><a href="feedback.html">Feedback</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="settings.html">Settings</a></li>
         </ul>
         <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
         <button id="notif-bell" class="btn ghost notif-bell" aria-label="Notifications">🔔<span id="notif-badge" class="notif-badge" hidden>0</span></button>
@@ -42,10 +36,9 @@
     <div class="container">
       <div class="section-head">
         <h2>Match Candidates</h2>
-        <p class="muted">Use filters to refine the list and click a card to view profile or report.</p>
+        <p class="muted">Use filters to refine the list and click Report if needed.</p>
       </div>
 
-      <!-- Filters -->
       <form id="match-filter" class="card form-grid" aria-describedby="matchFilterDesc">
         <p id="matchFilterDesc" class="sr">Filter candidates by gender, age range and interest.</p>
         <label>Gender
@@ -68,7 +61,6 @@
         <button type="reset" class="btn ghost">Reset</button>
       </form>
 
-      <!-- Result grid -->
       <div id="match-grid" class="grid cards" style="margin-top:16px" aria-live="polite"></div>
     </div>
   </main>
@@ -92,10 +84,9 @@
 
   <footer class="site-footer">
     <div class="container foot-grid">
-      <p>© <span id="year"></span> Meow Dating</p>
+      <p>© <span id="year"></span> LoveLink</p>
     </div>
   </footer>
   <script src="main_Version5.js" defer></script>
 </body>
 </html>
-
