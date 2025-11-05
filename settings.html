@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Settings · Meow Dating</title>
+  <meta name="description" content="Privacy, notifications and account controls.">
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="style_Version2.css" />
+  <style>
+    .danger{border-color:#fecaca;background:#fff1f2}
+    .danger .btn.primary{background:#ef4444}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="match.html">Match</a></li>
+          <li><a href="chat.html">Chat</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="feedback.html">Feedback</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="section">
+    <div class="container grid-2">
+      <!-- Privacy -->
+      <section class="card form-vert">
+        <h2>Privacy</h2>
+        <form id="privacy-form" class="form-vert" novalidate>
+          <label>Who can see me
+            <select name="visibility" required>
+              <option value="everyone">Everyone</option>
+              <option value="matched">Only my matches</option>
+              <option value="nobody">Nobody (hidden)</option>
+            </select>
+          </label>
+
+          <label>Blur distance (km)
+            <input type="number" name="distance_blur" min="0" max="50" step="1" placeholder="e.g. 5">
+          </label>
+
+          <label>Discovery preference
+            <select name="discover_gender">
+              <option value="">Any gender</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </label>
+
+          <div class="two-col">
+            <label>Age min
+              <input type="number" name="discover_age_min" min="18" max="80" placeholder="18">
+            </label>
+            <label>Age max
+              <input type="number" name="discover_age_max" min="18" max="80" placeholder="80">
+            </label>
+          </div>
+
+          <label>Interests (comma separated)
+            <input type="text" name="discover_interests" placeholder="music, travel">
+          </label>
+
+          <div class="two-col">
+            <label>Quiet hours (start, 0–23)
+              <input type="number" name="quiet_from" min="0" max="23" placeholder="22">
+            </label>
+            <label>Quiet hours (end, 0–23)
+              <input type="number" name="quiet_to" min="0" max="23" placeholder="8">
+            </label>
+          </div>
+
+          <label class="row"><input type="checkbox" name="notify_on" checked> Enable notifications</label>
+
+          <div class="row">
+            <button type="submit" class="btn primary">Save settings</button>
+            <button type="reset" class="btn ghost">Reset</button>
+          </div>
+        </form>
+        <p class="form-tip">These settings are saved only in your browser for this demo.</p>
+      </section>
+
+      <!-- Account -->
+      <section class="card form-vert danger">
+        <h2>Account</h2>
+        <p class="muted">Sign out or remove local data for this demo account.</p>
+        <div class="row">
+          <button id="btn-logout" class="btn">Log out</button>
+          <button id="btn-delete" class="btn primary">Delete account (local)</button>
+        </div>
+        <ul class="muted">
+          <li>Log out: clears your session and returns to Home.</li>
+          <li>Delete account: clears session and locally stored profile/prefs/reports (demo only).</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <p>© <span id="year"></span> Meow Dating</p>
+    </div>
+  </footer>
+
+  <script src="main_Version5.js" defer></script>
+</body>
+</html>
