@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login · Meow Dating</title>
-  <meta name="description" content="Sign in or create your account. (Demo only)">
+  <title>Login · LoveLink</title>
+  <meta name="description" content="Sign in or create your account (demo only).">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
   <style>
@@ -19,7 +19,7 @@
 
   <header class="site-header">
     <div class="container nav-wrap">
-      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">LoveLink</div>
       <nav class="nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
@@ -27,9 +27,10 @@
           <li><a href="users.html">Users</a></li>
           <li><a href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
-          <li><a href="login.html">Login</a></li>
+          <li><a class="active" href="login.html">Login</a></li>
           <li><a href="feedback.html">Feedback</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="settings.html">Settings</a></li>
         </ul>
         <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
       </nav>
@@ -39,7 +40,7 @@
   <main id="main" class="section">
     <div class="container">
       <div class="card form-vert auth-wrap">
-        <h2 id="auth-title">Welcome back</h2>
+        <h2 id="auth-title">Welcome to LoveLink</h2>
 
         <div role="tablist" aria-label="Authentication" class="tabs" id="auth-tabs">
           <button role="tab" id="tab-login" class="tab" aria-selected="true" aria-controls="panel-login">Log in</button>
@@ -54,7 +55,7 @@
             <button class="btn primary" type="submit">Login</button>
           </form>
           <p class="form-tip">
-            Forgot your password? <a href="forgot.html" id="fake-reset">Reset</a>
+            Forgot your password? <a href="#" id="fake-reset">Reset (demo)</a>
           </p>
           <p class="form-tip">No account? <a href="login.html#signup" id="go-signup">Create one</a></p>
         </section>
@@ -76,9 +77,10 @@
 
   <footer class="site-footer">
     <div class="container foot-grid">
-      <p>© <span id="year"></span> Meow Dating</p>
+      <p>© <span id="year"></span> LoveLink</p>
     </div>
   </footer>
   <script src="main_Version5.js" defer></script>
 </body>
 </html>
+
