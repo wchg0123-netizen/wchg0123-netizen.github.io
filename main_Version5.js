@@ -106,7 +106,7 @@ function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return 
         <p class="user-meta">Age ${u.age} · ${u.gender}</p>
         <p class="muted">Interests: ${u.interests.map(t=>`<span class="tag">${t}</span>`).join(' ')}</p>
         <div class="row">
-          <a class="btn primary" href="user.html?name=${encodeURIComponent(u.name)}">View</a>
+          <a class="btn primary" href="user.html?id=${encodeURIComponent(u.id)}">View</a>
           <a class="btn ghost" href="chat.html">Chat</a>
         </div>
       </article>
@@ -128,7 +128,7 @@ function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return 
         <p class="user-meta">Age ${u.age} · ${u.gender}</p>
         <p class="muted">Interests: ${u.interests.join(', ')}</p>
         <div class="row">
-          <a class="btn primary" href="user.html?name=${encodeURIComponent(u.name)}">View</a>
+          <a class="btn primary" href="user.html?id=${encodeURIComponent(u.id)}">View</a>
           <button class="btn ghost report-btn" data-id="${u.id}" data-name="${u.name}">Report</button>
         </div>
       </article>
@@ -186,20 +186,17 @@ function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return 
     e.preventDefault();
     const text = input.value.trim(); if(!text) return;
     add(text,'you'); input.value='';
-    // “收到消息”→ 通知
     setTimeout(()=>{
       add('Meow~ Got your message!', 'bot');
       window.__notify?.toast('New message received');
     }, 420);
   });
 
-  // Report from chat
   openReport?.addEventListener('click', ()=>{
     document.dispatchEvent(new CustomEvent('open-report',{ detail:{ label:'Reporting this conversation' }}));
     window.__report?.open({ user:'unknown', msgId:null });
   });
 
-  // About dialog
   function openAbout(){ aboutModal?.classList.add('open'); }
   function closeAbout(){ aboutModal?.classList.remove('open'); }
   openHelp?.addEventListener('click', openAbout);
@@ -209,21 +206,69 @@ function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return 
 /* ================== User profile page ================== */
 (function(){
   const box = document.getElementById('user-view'); if(!box) return;
-  const params = new URLSearchParams(location.search); const name = params.get('name');
-  const u = DEMO_USERS.find(x=>x.name.toLowerCase() === String(name||'').toLowerCase());
-  if(!u){ box.innerHTML = `<h2>User not found</h2><p class="muted">The user you are looking for does not exist.</p>`; return; }
+
+  // Prefer ?id=, fallback to ?name=
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const name = params.get('name');
+  let u = null;
+
+  if (id) u = DEMO_USERS.find(x => x.id === id);
+  if (!u && name) u = DEMO_USERS.find(x => x.name.toLowerCase() === String(name).toLowerCase());
+
+  if(!u){
+    box.innerHTML = `<h2>User not found</h2><p class="muted">The user you are looking for does not exist.</p>`;
+    return;
+  }
+
+  const initials = u.name.split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase();
+  const tags = u.interests.map(t=>`<span class="tag">${t}</span>`).join(' ');
+  const likedSet = new Set(JSON.parse(localStorage.getItem('likes') || '[]'));
+  const isLiked = likedSet.has(u.id);
 
   box.innerHTML = `
-    <h2>${u.name}</h2>
-    <p class="user-meta">Age ${u.age} · ${u.gender}</p>
-    <p>Interests: ${u.interests.map(t=>`<span class="tag">${t}</span>`).join(' ')}</p>
-    <p>${u.about||''}</p>
-    <div class="row">
-      <a class="btn primary" href="chat.html">Say hi</a>
-      <button class="btn ghost" id="report-user">Report</button>
+    <style>
+      .profile { display:grid; gap:16px; grid-template-columns:160px 1fr; align-items:start }
+      .avatar {
+        width:160px;height:160px;border-radius:16px;border:1px solid var(--border);
+        background:linear-gradient(135deg, rgba(124,58,237,.15), rgba(124,58,237,.05));
+        display:grid;place-items:center;font-weight:700;font-size:36px;color:var(--accent)
+      }
+      .meta { color:var(--muted); margin:.25rem 0 1rem }
+      .actions { display:flex; gap:8px; flex-wrap:wrap }
+      @media (max-width:720px){ .profile{grid-template-columns:1fr} .avatar{width:120px;height:120px} }
+    </style>
+    <div class="profile">
+      <div class="avatar" aria-label="${u.name} avatar">${initials}</div>
+      <div>
+        <h2>${u.name}</h2>
+        <p class="meta">Age ${u.age} · ${u.gender}</p>
+        <p>Interests: ${tags || '<span class="muted">No interests</span>'}</p>
+        <p style="margin-top:.5rem">${u.about || ''}</p>
+        <div class="actions" style="margin-top:12px">
+          <a class="btn primary" href="chat.html">Message</a>
+          <button id="btn-like" class="btn${isLiked?' primary':''}" aria-pressed="${isLiked}">${isLiked?'♥ Liked':'♡ Like'}</button>
+          <button id="btn-report" class="btn ghost">Report</button>
+        </div>
+      </div>
     </div>
   `;
-  document.getElementById('report-user')?.addEventListener('click', ()=>{
+
+  const likeBtn = document.getElementById('btn-like');
+  likeBtn?.addEventListener('click', ()=>{
+    const set = new Set(JSON.parse(localStorage.getItem('likes') || '[]'));
+    if(set.has(u.id)){
+      set.delete(u.id);
+      likeBtn.classList.remove('primary'); likeBtn.textContent='♡ Like'; likeBtn.setAttribute('aria-pressed','false');
+    }else{
+      set.add(u.id);
+      likeBtn.classList.add('primary'); likeBtn.textContent='♥ Liked'; likeBtn.setAttribute('aria-pressed','true');
+      window.__notify?.toast?.('Added to Likes');
+    }
+    localStorage.setItem('likes', JSON.stringify([...set]));
+  });
+
+  document.getElementById('btn-report')?.addEventListener('click', ()=>{
     document.dispatchEvent(new CustomEvent('open-report',{ detail:{ label:`Reporting ${u.name}` }}));
     window.__report?.open({ user: u.id });
   });
@@ -247,7 +292,6 @@ function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return 
   }
   tabLogin?.addEventListener('click', ()=>switchTo('login'));
   tabSignup?.addEventListener('click', ()=>switchTo('signup'));
-
   if(location.hash==='#signup') switchTo('signup');
 
   const accounts = load('accounts', []);
