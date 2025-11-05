@@ -110,4 +110,123 @@ function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return 
   const reg = document.getElementById('register-form');
   reg?.addEventListener('submit', e=>{
     e.preventDefault();
-    if(!reg.checkValidity()) retu
+    if(!reg.checkValidity()) return reg.reportValidity();
+    const fd = new FormData(reg);
+    const email = String(fd.get('email')).toLowerCase().trim();
+    const password = String(fd.get('password'));
+    const username = String(fd.get('username')).trim();
+
+    if(accounts.find(a=>a.email===email)){
+      alert('This email is already registered (demo). Try logging in.');
+      return;
+    }
+    accounts.push({email, password, username});
+    saveAcc(accounts);
+    save('session', {email});
+    alert('Account created! (demo) Now complete your profile.');
+    location.href = 'profile.html';
+  });
+
+  // Login
+  const login = document.getElementById('login-form');
+  login?.addEventListener('submit', e=>{
+    e.preventDefault();
+    if(!login.checkValidity()) return login.reportValidity();
+    const fd = new FormData(login);
+    const email = String(fd.get('email')).toLowerCase().trim();
+    const password = String(fd.get('password'));
+
+    const hit = accounts.find(a=>a.email===email && a.password===password);
+    if(hit){
+      save('session', {email});
+      alert('Login success! (demo)');
+      location.href = 'profile.html';
+    }else{
+      location.href = 'login-error.html';
+    }
+  });
+
+  // Forgot password page
+  const forgot = document.getElementById('forgot-form');
+  const forgotOut = document.getElementById('forgot-result');
+  forgot?.addEventListener('submit', e=>{
+    e.preventDefault();
+    if(!forgot.checkValidity()) return forgot.reportValidity();
+    const fd = new FormData(forgot);
+    const email = String(fd.get('email')).toLowerCase().trim();
+    const exists = accounts.some(a=>a.email===email);
+    forgotOut.textContent = exists
+      ? 'A reset link has been sent to your email (demo).'
+      : 'Email not found — you can create a new account on the Login page.';
+  });
+})();
+
+/* -------------------- Profile（完善资料：必填、标签、头像预览） -------------------- */
+(function(){
+  const form = document.getElementById('profile-form');
+  const inpName = document.getElementById('pf-name');
+  const inpGender = document.getElementById('pf-gender');
+  const inpAge = document.getElementById('pf-age');
+  const inpAbout = document.getElementById('pf-about');
+  const tagInput = document.getElementById('pf-tag-input');
+  const tagWrap = document.getElementById('pf-tags');
+  const avatarInput = document.getElementById('pf-avatar');
+  const avatarImg = document.getElementById('pf-avatar-preview');
+
+  if(!form) return;
+
+  // who is logged in
+  const session = load('session');
+  const email = session?.email || 'guest@example.com';
+
+  // load existing profile
+  const key = `profile:${email}`;
+  const data = load(key, {name:'',gender:'',age:'',about:'',tags:[],avatar:''});
+
+  function renderTags(){
+    tagWrap.innerHTML = data.tags.map((t,i)=>`<span class="tag">${t}<button aria-label="Remove tag ${t}" data-i="${i}">×</button></span>`).join('');
+  }
+
+  // init fields
+  inpName.value = data.name||'';
+  inpGender.value = data.gender||'';
+  inpAge.value = data.age||'';
+  inpAbout.value = data.about||'';
+  if(data.avatar){ avatarImg.src = data.avatar; }
+  renderTags();
+
+  tagWrap.addEventListener('click', e=>{
+    const i = e.target?.dataset?.i;
+    if(i==null) return;
+    data.tags.splice(Number(i),1);
+    renderTags();
+  });
+
+  tagInput?.addEventListener('keydown', e=>{
+    if(e.key==='Enter'){
+      e.preventDefault();
+      const v = tagInput.value.trim();
+      if(!v) return;
+      if(!data.tags.includes(v)) data.tags.push(v);
+      tagInput.value=''; renderTags();
+    }
+  });
+
+  avatarInput?.addEventListener('change', e=>{
+    const file = avatarInput.files?.[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => { avatarImg.src = reader.result; data.avatar = reader.result; };
+    reader.readAsDataURL(file);
+  });
+
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    data.name = inpName.value.trim();
+    data.gender = inpGender.value;
+    data.age = inpAge.value ? Number(inpAge.value) : '';
+    data.about = inpAbout.value.trim();
+    save(key, data);
+    alert('Profile saved locally (demo).');
+  });
+})();
