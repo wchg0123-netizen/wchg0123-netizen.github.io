@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Forgot Password · Meow Dating</title>
+  <meta name="description" content="Reset your password (demo)">
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="style_Version2.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="section">
+    <div class="container">
+      <div class="card form-vert" style="max-width:560px;margin:auto">
+        <h2>Forgot Password</h2>
+        <form id="forgot-form" novalidate>
+          <label>Your email <input name="email" type="email" required></label>
+          <button class="btn primary" type="submit">Send reset link</button>
+        </form>
+        <p class="form-tip">Demo only — we will simply show a confirmation.</p>
+        <div id="forgot-result" class="muted" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <p>© <span id="year"></span> Meow Dating</p>
+    </div>
+  </footer>
+  <script src="main_Version5.js" defer></script>
+</body>
+</html>
