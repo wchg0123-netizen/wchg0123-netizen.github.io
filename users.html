@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Users · LoveLink</title>
-  <meta name="description" content="User catalogue with simple cards.">
+  <title>User Profile · LoveLink</title>
+  <meta name="description" content="User profile view (demo)">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
 </head>
@@ -18,7 +18,7 @@
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
           <li><a href="index.html">Home</a></li>
-          <li><a class="active" href="users.html">Users</a></li>
+          <li><a href="users.html">Users</a></li>
           <li><a href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
           <li><a href="login.html">Login</a></li>
@@ -33,11 +33,10 @@
 
   <main id="main" class="section">
     <div class="container">
-      <div class="section-head">
-        <h2>User Catalogue</h2>
-        <p class="muted">Demo data with simple cards.</p>
+      <article id="user-view" class="card" aria-live="polite"></article>
+      <div style="margin-top:12px">
+        <a class="btn ghost" href="users.html">← Back to Users</a>
       </div>
-      <div id="user-list" class="grid cards" aria-live="polite"></div>
     </div>
   </main>
 
