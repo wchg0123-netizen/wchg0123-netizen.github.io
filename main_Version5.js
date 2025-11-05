@@ -1,232 +1,173 @@
-/* -------------- 主题 / 导航 / 年份（与之前相同，已精简） -------------- */
+/* ===================== Notifications (badge + toast) ===================== */
 (function(){
-  const root = document.documentElement, btn=document.getElementById('theme-toggle');
-  if(!btn) return; const saved=localStorage.getItem('theme'); if(saved==='dark') root.classList.add('dark');
-  btn.setAttribute('aria-pressed', root.classList.contains('dark'));
-  btn.addEventListener('click',()=>{root.classList.toggle('dark');const d=root.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');btn.setAttribute('aria-pressed',d);});
-})();
-(function(){
-  const t=document.querySelector('.nav-toggle'), l=document.getElementById('nav-list'); if(!t||!l) return;
-  t.addEventListener('click',()=>{const o=l.classList.toggle('open');t.setAttribute('aria-expanded',String(o));});
-  l.addEventListener('click',e=>{ if(e.target.closest('a')){ l.classList.remove('open'); t.setAttribute('aria-expanded','false'); }});
-})();
-(function(){
-  const l=document.getElementById('nav-list'); if(!l) return;
-  const f=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-  l.querySelectorAll('a').forEach(a=>{const h=(a.getAttribute('href')||'').toLowerCase(); const on=(h===f)|| (f==='index.html'&&h.endsWith('index.html')); a.classList.toggle('active',on); a.setAttribute('aria-current',on?'page':'false');});
-})();
-document.getElementById('year')?.append(new Date().getFullYear());
+  const bell = document.getElementById('notif-bell');
+  const badge = document.getElementById('notif-badge');
+  const toast = document.getElementById('toast');
 
-/* -------------------- Demo 数据 & 通用工具 -------------------- */
-const DEMO_USERS = [
-  { name:'Luna', age:22, gender:'Female', hobby:'music', about:'Coffee & lo-fi beats.' },
-  { name:'Milo', age:25, gender:'Male',   hobby:'basketball', about:'Weekend hooper.' },
-  { name:'Nabi', age:21, gender:'Female', hobby:'reading',    about:'Bookworm.' },
-  { name:'Kuro', age:28, gender:'Male',   hobby:'gaming',     about:'RPG lover.' },
-  { name:'Sora', age:24, gender:'Male',   hobby:'music',      about:'Guitar practice.' },
-  { name:'Mimi', age:26, gender:'Female', hobby:'travel',     about:'Backpacker.' },
-];
-
-function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
-function load(k, fallback=null){ try{ const v = localStorage.getItem(k); return v? JSON.parse(v): fallback; }catch(_){ return fallback; } }
-
-/* -------------------- Users 列表 + 筛选 + 可点击卡片 -------------------- */
-(function(){
-  const list = document.getElementById('user-list');
-  const form = document.getElementById('user-filter');
-  if(!list||!form) return;
-
-  function render(arr){
-    list.innerHTML = arr.map(u=>`
-      <a class="card user-card" tabindex="0" href="user.html?name=${encodeURIComponent(u.name)}">
-        <h3>${u.name}</h3>
-        <p class="user-meta">Age ${u.age} · ${u.gender} · Hobby: ${u.hobby}</p>
-        <span class="btn ghost like" aria-hidden="true">View profile →</span>
-      </a>
-    `).join('');
+  function setBadge(n){
+    if(!badge) return;
+    if(n<=0){ badge.hidden = true; badge.textContent = '0'; }
+    else { badge.hidden = false; badge.textContent = String(n); }
   }
-  function filter(fd){
-    const age=Number(fd.get('age'));
-    const gender=String(fd.get('gender')||'').toLowerCase();
-    const hobby=String(fd.get('hobby')||'').toLowerCase().trim();
-    return DEMO_USERS.filter(u=>{
-      const byAge = age? u.age===age : true;
-      const byG = gender? u.gender.toLowerCase()===gender : true;
-      const byH = hobby? u.hobby.toLowerCase().includes(hobby) : true;
-      return byAge && byG && byH;
+
+  let unread = 0;
+  function pushToast(text){
+    if(!toast) return;
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.textContent = text;
+    toast.appendChild(div);
+    setTimeout(()=>div.remove(), 3500);
+    setBadge(++unread);
+  }
+
+  // 暴露到全局供其他模块调用
+  window.__notify = {
+    toast: pushToast,
+    increase: (n=1)=> setBadge(unread+=n),
+    clear: ()=>{ unread=0; setBadge(0); }
+  };
+
+  bell?.addEventListener('click', ()=> window.__notify?.clear());
+})();
+
+/* ===================== Report modal (reusable) ===================== */
+(function(){
+  const modal = document.getElementById('report-modal');
+  const form = document.getElementById('report-form');
+  const cancel = document.getElementById('report-cancel');
+  const target = document.getElementById('report-target');
+  if(!modal || !form) return;
+
+  let reportCtx = { user: null, msgId: null };
+  function open(ctx){ reportCtx = ctx||{}; modal.classList.add('open'); }
+  function close(){ modal.classList.remove('open'); form.reset(); }
+
+  window.__report = { open, close };
+
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const fd = new FormData(form);
+    const reason = String(fd.get('reason')||'').trim();
+    const payload = { id: crypto.randomUUID?.() || String(Date.now()), reason, at: new Date().toISOString(), ...reportCtx };
+    const list = JSON.parse(localStorage.getItem('reports')||'[]');
+    list.push(payload);
+    localStorage.setItem('reports', JSON.stringify(list));
+    window.__notify?.toast('Report submitted. Thank you!');
+    close();
+  });
+  cancel?.addEventListener('click', close);
+
+  // 允许设置可见的“举报对象”文案
+  if(target) {
+    const backup = target.textContent;
+    document.addEventListener('open-report', (e)=>{
+      const { label } = e.detail || {};
+      target.textContent = label || backup;
     });
   }
-  render(DEMO_USERS);
-  form.addEventListener('submit',e=>{ e.preventDefault(); const fd=new FormData(form); render(filter(fd)); });
-  form.addEventListener('reset',()=> setTimeout(()=>render(DEMO_USERS),0));
 })();
 
-/* -------------------- 用户详情页 user.html -------------------- */
+/* ===================== Match page: filters + cards + report buttons ===================== */
 (function(){
-  const box = document.getElementById('user-view'); if(!box) return;
-  const params = new URLSearchParams(location.search); const name = params.get('name');
-  const u = DEMO_USERS.find(x=>x.name.toLowerCase() === String(name||'').toLowerCase());
-  if(!u){ box.innerHTML = `<h2>User not found</h2><p class="muted">The user you are looking for does not exist.</p>`; return; }
+  const grid = document.getElementById('match-grid');
+  const form = document.getElementById('match-filter');
+  if(!grid || !form) return;
 
-  box.innerHTML = `
-    <h2>${u.name}</h2>
-    <p class="user-meta">Age ${u.age} · ${u.gender} · Hobby: ${u.hobby}</p>
-    <p>${u.about||''}</p>
-    <div class="row">
-      <a class="btn primary" href="chat.html">Say hi</a>
-      <a class="btn ghost" href="users.html">Back</a>
-    </div>
-  `;
-})();
+  const USERS = [
+    { id:'u_luna', name:'Luna', age:22, gender:'Female', interests:['music','coffee'], about:'Coffee & lo-fi.' },
+    { id:'u_milo', name:'Milo', age:25, gender:'Male', interests:['basketball'], about:'Weekend hooper.' },
+    { id:'u_nabi', name:'Nabi', age:21, gender:'Female', interests:['reading'], about:'Bookworm.' },
+    { id:'u_kuro', name:'Kuro', age:28, gender:'Male', interests:['gaming'], about:'RPG lover.' },
+    { id:'u_sora', name:'Sora', age:24, gender:'Male', interests:['music'], about:'Guitar practice.' },
+    { id:'u_mimi', name:'Mimi', age:26, gender:'Female', interests:['travel'], about:'Backpacker.' },
+  ];
 
-/* -------------------- Match -------------------- */
-(function(){
-  const btn=document.getElementById('match-btn'), out=document.getElementById('match-result');
-  if(!btn||!out) return;
-  btn.addEventListener('click',()=>{
-    const pick = DEMO_USERS[Math.floor(Math.random()*DEMO_USERS.length)].name;
-    out.textContent = `You matched with ${pick} 🎉`;
-  });
-})();
-
-/* -------------------- Chat -------------------- */
-(function(){
-  const log=document.getElementById('chat-log'), form=document.getElementById('chat-form'), input=document.getElementById('chat-input');
-  if(!log||!form||!input) return;
-  function add(text,who='you'){ const li=document.createElement('li'); li.textContent=(who==='bot'?'Meow: ':'You: ')+text; log.appendChild(li); log.scrollTop=log.scrollHeight; }
-  form.addEventListener('submit',e=>{ e.preventDefault(); const t=input.value.trim(); if(!t) return; add(t,'you'); input.value=''; setTimeout(()=>add('Meow~ Nice to meet you!','bot'),400); });
-})();
-
-/* -------------------- Auth（注册 / 登录 / 忘记密码） -------------------- */
-/* localStorage keys:
-   - accounts: [{email, password, username}]
-   - session: { email }
-*/
-(function(){
-  const accounts = load('accounts', []);
-  function saveAcc(list){ save('accounts', list); }
-
-  // Signup (Create account)
-  const reg = document.getElementById('register-form');
-  reg?.addEventListener('submit', e=>{
-    e.preventDefault();
-    if(!reg.checkValidity()) return reg.reportValidity();
-    const fd = new FormData(reg);
-    const email = String(fd.get('email')).toLowerCase().trim();
-    const password = String(fd.get('password'));
-    const username = String(fd.get('username')).trim();
-
-    if(accounts.find(a=>a.email===email)){
-      alert('This email is already registered (demo). Try logging in.');
-      return;
-    }
-    accounts.push({email, password, username});
-    saveAcc(accounts);
-    save('session', {email});
-    alert('Account created! (demo) Now complete your profile.');
-    location.href = 'profile.html';
-  });
-
-  // Login
-  const login = document.getElementById('login-form');
-  login?.addEventListener('submit', e=>{
-    e.preventDefault();
-    if(!login.checkValidity()) return login.reportValidity();
-    const fd = new FormData(login);
-    const email = String(fd.get('email')).toLowerCase().trim();
-    const password = String(fd.get('password'));
-
-    const hit = accounts.find(a=>a.email===email && a.password===password);
-    if(hit){
-      save('session', {email});
-      alert('Login success! (demo)');
-      location.href = 'profile.html';
-    }else{
-      location.href = 'login-error.html';
-    }
-  });
-
-  // Forgot password page
-  const forgot = document.getElementById('forgot-form');
-  const forgotOut = document.getElementById('forgot-result');
-  forgot?.addEventListener('submit', e=>{
-    e.preventDefault();
-    if(!forgot.checkValidity()) return forgot.reportValidity();
-    const fd = new FormData(forgot);
-    const email = String(fd.get('email')).toLowerCase().trim();
-    const exists = accounts.some(a=>a.email===email);
-    forgotOut.textContent = exists
-      ? 'A reset link has been sent to your email (demo).'
-      : 'Email not found — you can create a new account on the Login page.';
-  });
-})();
-
-/* -------------------- Profile（完善资料：必填、标签、头像预览） -------------------- */
-(function(){
-  const form = document.getElementById('profile-form');
-  const inpName = document.getElementById('pf-name');
-  const inpGender = document.getElementById('pf-gender');
-  const inpAge = document.getElementById('pf-age');
-  const inpAbout = document.getElementById('pf-about');
-  const tagInput = document.getElementById('pf-tag-input');
-  const tagWrap = document.getElementById('pf-tags');
-  const avatarInput = document.getElementById('pf-avatar');
-  const avatarImg = document.getElementById('pf-avatar-preview');
-
-  if(!form) return;
-
-  // who is logged in
-  const session = load('session');
-  const email = session?.email || 'guest@example.com';
-
-  // load existing profile
-  const key = `profile:${email}`;
-  const data = load(key, {name:'',gender:'',age:'',about:'',tags:[],avatar:''});
-
-  function renderTags(){
-    tagWrap.innerHTML = data.tags.map((t,i)=>`<span class="tag">${t}<button aria-label="Remove tag ${t}" data-i="${i}">×</button></span>`).join('');
+  function card(u){
+    const tags = u.interests.map(t=>`<span class="tag">${t}</span>`).join(' ');
+    return `
+      <article class="card user-card" tabindex="0">
+        <h3>${u.name}</h3>
+        <p class="user-meta">Age ${u.age} · ${u.gender}</p>
+        <p class="muted">Interests: ${u.interests.join(', ')}</p>
+        <div class="row">
+          <a class="btn primary" href="user.html?name=${encodeURIComponent(u.name)}">View</a>
+          <button class="btn ghost report-btn" data-id="${u.id}" data-name="${u.name}">Report</button>
+        </div>
+      </article>
+    `;
   }
 
-  // init fields
-  inpName.value = data.name||'';
-  inpGender.value = data.gender||'';
-  inpAge.value = data.age||'';
-  inpAbout.value = data.about||'';
-  if(data.avatar){ avatarImg.src = data.avatar; }
-  renderTags();
+  function render(list){
+    grid.innerHTML = list.map(card).join('');
+  }
 
-  tagWrap.addEventListener('click', e=>{
-    const i = e.target?.dataset?.i;
-    if(i==null) return;
-    data.tags.splice(Number(i),1);
-    renderTags();
-  });
+  function apply(){
+    const fd = new FormData(form);
+    const gender = String(fd.get('gender')||'').toLowerCase();
+    const min = Number(fd.get('min_age')||18);
+    const max = Number(fd.get('max_age')||80);
+    const interest = String(fd.get('interest')||'').toLowerCase().trim();
 
-  tagInput?.addEventListener('keydown', e=>{
-    if(e.key==='Enter'){
-      e.preventDefault();
-      const v = tagInput.value.trim();
-      if(!v) return;
-      if(!data.tags.includes(v)) data.tags.push(v);
-      tagInput.value=''; renderTags();
-    }
-  });
+    const res = USERS.filter(u=>{
+      const byG = gender? u.gender.toLowerCase()===gender : true;
+      const byA = u.age>=min && u.age<=max;
+      const byI = interest? u.interests.some(i=>i.toLowerCase().includes(interest)) : true;
+      return byG && byA && byI;
+    });
+    render(res);
+    window.__notify?.toast(`Found ${res.length} candidate(s).`);
+  }
 
-  avatarInput?.addEventListener('change', e=>{
-    const file = avatarInput.files?.[0]; if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => { avatarImg.src = reader.result; data.avatar = reader.result; };
-    reader.readAsDataURL(file);
+  render(USERS);
+  form.addEventListener('submit', e=>{ e.preventDefault(); apply(); });
+  form.addEventListener('reset', ()=> setTimeout(()=>{ render(USERS); window.__notify?.toast('Filters cleared.'); },0));
+
+  grid.addEventListener('click', e=>{
+    const btn = e.target.closest('.report-btn'); if(!btn) return;
+    const name = btn.dataset.name;
+    document.dispatchEvent(new CustomEvent('open-report',{ detail:{ label:`Reporting ${name}` }}));
+    window.__report?.open({ user: btn.dataset.id });
   });
+})();
+
+/* ===================== Chat page: dialog + notifications + echo bot ===================== */
+(function(){
+  const log = document.getElementById('chat-log');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  const openReport = document.getElementById('open-report');
+  const openHelp = document.getElementById('open-help');
+  const aboutModal = document.getElementById('about-modal');
+  const aboutClose = document.getElementById('about-close');
+  if(!log || !form || !input) return;
+
+  function add(text, who='you'){
+    const li = document.createElement('li');
+    li.textContent = (who==='bot'?'Meow: ':'You: ') + text;
+    log.appendChild(li); log.scrollTop = log.scrollHeight;
+  }
 
   form.addEventListener('submit', e=>{
     e.preventDefault();
-    if(!form.checkValidity()){ form.reportValidity(); return; }
-    data.name = inpName.value.trim();
-    data.gender = inpGender.value;
-    data.age = inpAge.value ? Number(inpAge.value) : '';
-    data.about = inpAbout.value.trim();
-    save(key, data);
-    alert('Profile saved locally (demo).');
+    const text = input.value.trim(); if(!text) return;
+    add(text,'you'); input.value='';
+    // “收到消息”→ 通知
+    setTimeout(()=>{
+      add('Meow~ Got your message!', 'bot');
+      window.__notify?.toast('New message received');
+    }, 420);
   });
+
+  // Report from chat
+  openReport?.addEventListener('click', ()=>{
+    document.dispatchEvent(new CustomEvent('open-report',{ detail:{ label:'Reporting this conversation' }}));
+    window.__report?.open({ user:'unknown', msgId:null });
+  });
+
+  // About dialog
+  function openAbout(){ aboutModal?.classList.add('open'); }
+  function closeAbout(){ aboutModal?.classList.remove('open'); }
+  openHelp?.addEventListener('click', openAbout);
+  aboutClose?.addEventListener('click', closeAbout);
 })();
