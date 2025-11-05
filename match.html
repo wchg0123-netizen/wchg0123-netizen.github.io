@@ -4,9 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Match · Meow Dating</title>
-  <meta name="description" content="Simulate a match suggestion with one click.">
+  <meta name="description" content="Find candidates with filters and card-style results.">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
+  <style>
+    .notif-bell{position:relative}
+    .notif-badge{position:absolute;top:-6px;right:-6px;background:#e11d48;color:#fff;border-radius:999px;padding:0 6px;font-size:12px;line-height:18px;min-width:18px;text-align:center}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+    .modal.open{display:flex}
+    .modal .dialog{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:16px;max-width:520px;width:100%}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -26,24 +33,62 @@
           <li><a href="contact.html">Contact</a></li>
         </ul>
         <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+        <button id="notif-bell" class="btn ghost notif-bell" aria-label="Notifications">🔔<span id="notif-badge" class="notif-badge" hidden>0</span></button>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="section alt">
+  <main id="main" class="section">
     <div class="container">
-      <div class="stack">
-        <div class="section-head">
-          <h2>Match System</h2>
-          <p class="muted">Click the button to simulate a match suggestion.</p>
-        </div>
-        <div class="card row">
-          <button id="match-btn" class="btn primary">Find a Match</button>
-          <div id="match-result" class="match-result" role="status" aria-live="polite"></div>
-        </div>
+      <div class="section-head">
+        <h2>Match Candidates</h2>
+        <p class="muted">Use filters to refine the list and click a card to view profile or report.</p>
       </div>
+
+      <!-- Filters -->
+      <form id="match-filter" class="card form-grid" aria-describedby="matchFilterDesc">
+        <p id="matchFilterDesc" class="sr">Filter candidates by gender, age range and interest.</p>
+        <label>Gender
+          <select name="gender">
+            <option value="">Any</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </label>
+        <label>Min age
+          <input type="number" name="min_age" min="18" max="80" placeholder="18" />
+        </label>
+        <label>Max age
+          <input type="number" name="max_age" min="18" max="80" placeholder="80" />
+        </label>
+        <label>Interest
+          <input type="text" name="interest" placeholder="e.g. music" />
+        </label>
+        <button type="submit" class="btn primary">Apply</button>
+        <button type="reset" class="btn ghost">Reset</button>
+      </form>
+
+      <!-- Result grid -->
+      <div id="match-grid" class="grid cards" style="margin-top:16px" aria-live="polite"></div>
     </div>
   </main>
+
+  <!-- Reusable Report Modal -->
+  <div id="report-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="report-title">
+    <div class="dialog">
+      <h3 id="report-title">Report user</h3>
+      <p class="muted" id="report-target"></p>
+      <form id="report-form" class="form-vert">
+        <label>Reason
+          <textarea name="reason" rows="3" placeholder="Describe the issue…" required></textarea>
+        </label>
+        <div class="row">
+          <button type="submit" class="btn primary">Submit report</button>
+          <button type="button" id="report-cancel" class="btn ghost">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container foot-grid">
@@ -53,3 +98,4 @@
   <script src="main_Version5.js" defer></script>
 </body>
 </html>
+
