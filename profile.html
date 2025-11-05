@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Complete Profile · Meow Dating</title>
+  <meta name="description" content="Fill in your basic profile (demo only)">
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="style_Version2.css" />
+  <style>
+    .tag-row{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:var(--card)}
+    .tag button{margin-left:6px;border:none;background:transparent;cursor:pointer}
+    .avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="brand" role="link" tabindex="0" onclick="location.href='index.html'">Meow Dating</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="match.html">Match</a></li>
+          <li><a href="chat.html">Chat</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="feedback.html">Feedback</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="section alt">
+    <div class="container">
+      <div class="two-col">
+        <div class="card form-vert">
+          <h2>Basic Info</h2>
+          <form id="profile-form" novalidate>
+            <label>Display name * <input id="pf-name" name="name" required></label>
+            <label>Gender *
+              <select id="pf-gender" name="gender" required>
+                <option value="">Select gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label>Age <input id="pf-age" name="age" type="number" min="18" max="80" placeholder="18-80"></label>
+            <label>About <textarea id="pf-about" name="about" rows="4" placeholder="A short bio"></textarea></label>
+            <button class="btn primary" type="submit">Save profile</button>
+          </form>
+          <p class="form-tip">Fields with * are required. Demo stores data in your browser only.</p>
+        </div>
+
+        <div class="card form-vert">
+          <h2>Avatar & Interests</h2>
+          <div class="row">
+            <img id="pf-avatar-preview" class="avatar" alt="Avatar preview" src="">
+            <div>
+              <label>Upload avatar
+                <input id="pf-avatar" type="file" accept="image/*">
+              </label>
+              <p class="form-tip">Preview only; not uploaded.</p>
+            </div>
+          </div>
+
+          <div>
+            <label>Add an interest (press Enter)
+              <input id="pf-tag-input" type="text" placeholder="e.g. music, travel" />
+            </label>
+            <div id="pf-tags" class="tag-row" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container foot-grid">
+      <p>© <span id="year"></span> Meow Dating</p>
+    </div>
+  </footer>
+  <script src="main_Version5.js" defer></script>
+</body>
+</html>
