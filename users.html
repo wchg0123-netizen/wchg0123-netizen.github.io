@@ -4,9 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>User Profile · LoveLink</title>
-  <meta name="description" content="User profile view (demo)">
+  <meta name="description" content="User profile view">
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style_Version2.css" />
+  <style>
+    .profile { display:grid; gap:16px; grid-template-columns:160px 1fr; align-items:start }
+    .avatar {
+      width:160px;height:160px;border-radius:16px;border:1px solid var(--border);
+      background:linear-gradient(135deg, rgba(124,58,237,.15), rgba(124,58,237,.05));
+      display:grid;place-items:center;font-weight:700;font-size:36px;color:var(--accent)
+    }
+    .meta { color:var(--muted); margin:.25rem 0 1rem }
+    .actions { display:flex; gap:8px; flex-wrap:wrap }
+    @media (max-width:720px){ .profile{grid-template-columns:1fr} .avatar{width:120px;height:120px} }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -18,7 +29,7 @@
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
         <ul id="nav-list" class="nav-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="users.html">Users</a></li>
+          <li><a href="users.html" class="active">Users</a></li>
           <li><a href="match.html">Match</a></li>
           <li><a href="chat.html">Chat</a></li>
           <li><a href="login.html">Login</a></li>
@@ -48,3 +59,4 @@
   <script src="main_Version5.js" defer></script>
 </body>
 </html>
+
